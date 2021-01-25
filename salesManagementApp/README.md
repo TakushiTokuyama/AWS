@@ -29,6 +29,9 @@ wget http://ftp.yz.yamagata-u.ac.jp/pub/network/apache/tomcat/tomcat-9/v9.0.41/b
 tar -xzvf ~/apache-tomcat-9.0.41.tar.gz  
 ln -s /opt/apache-tomcat-9.0.41 /opt/tomcat  
 
+## cloudFormation.yaml
+インフラ構築の自動化
+
 ## URL
 https://openstandia.jp/oss_info/nginx/version/  
 https://tomcat.apache.org/download-90.cgi  
