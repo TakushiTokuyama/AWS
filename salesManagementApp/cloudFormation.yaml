@@ -162,25 +162,15 @@ Resources:
           SubnetId:
             Ref: Subnet
 
-  # Create NetWorkInterface
-  NetworkInterface:
-    Type: AWS::EC2::NetworkInterface
+  # Create ElasticIP
+  EIP:
+    Type: AWS::EC2::EIP
     Properties:
-      Tags:
-        - Key: Name
-          Value: NetworkInterface
-      GroupSet:
-        - !Ref SecurityGroup
-      SubnetId:
-        Ref: Subnet
-      PrivateIpAddress: 10.0.0.16
+      Domain: VPC
 
-  # Attach NetworkInterface
-  NetworkInterfaceAttachment:
-    Type: AWS::EC2::NetworkInterfaceAttachment
+  # Attach EIPAssociation
+  EIPAssociation:
+    Type: AWS::EC2::EIPAssociation
     Properties:
-      InstanceId:
-        Ref: EC2Instance
-      NetworkInterfaceId:
-        Ref: NetworkInterface
-      DeviceIndex: 1
+      InstanceId: !Ref EC2Instance
+      EIP: !Ref EIP
