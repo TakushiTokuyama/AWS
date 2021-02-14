@@ -9,6 +9,9 @@ Parameters:
   AMIID:
     Type: AWS::SSM::Parameter::Value<String>
     Default: /aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2
+  AvailabilityZone:
+    Description: Input a AZ where Public Subnet will be created.
+    Type: AWS::EC2::AvailabilityZone::Name
 
 Resources:
   # Create Vpc
@@ -30,7 +33,7 @@ Resources:
       VpcId:
         Ref: VPC
       CidrBlock: 10.0.0.0/24
-      AvailabilityZone: "ap-northeast-1a"
+      AvailabilityZone: !Ref AvailabilityZone
       Tags:
         - Key: Name
           Value: PublicSubnet
@@ -42,7 +45,7 @@ Resources:
       VpcId:
         Ref: VPC
       CidrBlock: 10.0.1.0/24
-      AvailabilityZone: "ap-northeast-1a"
+      AvailabilityZone: !Ref AvailabilityZone
       Tags:
         - Key: Name
           Value: PrivateSubnet
@@ -112,6 +115,16 @@ Resources:
       RouteTableId:
         Ref: PublicRouteTable
       DestinationCidrBlock: 0.0.0.0/0
+
+  # Attach RouteTable to NatGateway
+  EntranceRouteTableToNatGateway:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: PrivateRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: NatGateWay
 
   # Create Private_RouteTable
   PrivateRouteTable:
