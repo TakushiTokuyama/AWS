@@ -44,6 +44,14 @@ Parameters:
     MaxLength: 20
     AllowedPattern: "[a-zA-Z0-9]*"
     ConstraintDescription: "must contain only alphanumeric characters."
+  PublicEC2Location:
+    Description: IP address range that can be used to TCP to the EC2
+    Type: String
+    MinLength: "9"
+    MaxLength: "18"
+    Default: 0.0.0.0/0
+    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
+    ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
   RDSLocation:
     Description: IP address range that can be used to TCP to the RDS
     Type: String
@@ -312,7 +320,7 @@ Resources:
         - IpProtocol: tcp
           FromPort: 22
           ToPort: 22
-          CidrIp: 0.0.0.0/0
+          CidrIp: !Ref PublicEC2Location
         - IpProtocol: tcp
           FromPort: 80
           ToPort: 80
@@ -353,6 +361,14 @@ Resources:
           FromPort: 22
           ToPort: 22
           CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
       VpcId:
         Ref: VPC
 
@@ -372,6 +388,13 @@ Resources:
             - !Ref PublicSecurityGroup
           SubnetId:
             Ref: PublicSubnet
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash -ex
+          sudo yum update -y
+      Tags:
+        - Key: "Name"
+          Value: "update"
 
     # Create PrivateEC2Instance
   PrivateEC2Instance:
@@ -389,6 +412,13 @@ Resources:
             - !Ref PrivateSecurityGroup
           SubnetId:
             Ref: PrivateSubnetA
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash -ex
+          sudo yum update -y
+      Tags:
+        - Key: "Name"
+          Value: "update"
 
   # Create ElasticIP
   EIP:
