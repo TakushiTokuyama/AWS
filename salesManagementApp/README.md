@@ -38,6 +38,7 @@ yum install -y mysql-community-server // インストール
 systemctl start mysqld // 起動
 systemctl status mysqld // 状態確認
 mysql -h xxxxxxx -P 3306 -u xxxx –p xxxx // login
+mysql -h test3.cqsqewpv40rb.ap-northeast-1.rds.amazonaws.com -P 3306 -u admin –p
 
 ### Tomcat
 ca /opt/  
