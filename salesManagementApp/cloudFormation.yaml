@@ -45,7 +45,7 @@ Parameters:
     AllowedPattern: "[a-zA-Z0-9]*"
     ConstraintDescription: "must contain only alphanumeric characters."
   PublicEC2Location:
-    Description: IP address range that can be used to TCP to the EC2
+    Description: IP address range that can be used to TCP to the EC2 My Ip Address
     Type: String
     MinLength: "9"
     MaxLength: "18"
