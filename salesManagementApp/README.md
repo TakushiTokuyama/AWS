@@ -19,7 +19,7 @@ Apache Tomcat 9.0.41
 
 ## Use Command 
 yum update  
-ps aux |grep "yum update" //update確認コマンド 
+ps aux |grep "yum update" //update確認コマンド  
 ssh -i xxxx.pem ec2-user@x.x.x.x // 接続用  
 
 ### Nginx
@@ -38,11 +38,12 @@ systemctl start mysqld // 起動
 systemctl status mysqld // 状態確認  
 mysql -h test3.xxxx.xxxx.rds.amazonaws.com -P 3306 -u admin –p  //ログイン
 
-### Tomcat
-ca /opt/  
-wget http://ftp.yz.yamagata-u.ac.jp/pub/network/apache/tomcat/tomcat-9/v9.0.41/bin/apache-tomcat-9.0.41.tar.gz  
-tar -xzvf ~/apache-tomcat-9.0.41.tar.gz  
-ln -s /opt/apache-tomcat-9.0.41 /opt/tomcat  
+### nginx .conf
+vim /etc/nginx/nginx.conf 
+
+location / {
+           proxy_pass http://localhost:8080; // リバースプロキシ設定
+        }
 
 ### useful Command
 rm -f /var/run/yum.pid // yumlockが、かかったときの対処法  
@@ -50,10 +51,16 @@ sudo nslookup xxxx.xxxxx.xxxx.rds.amazonaws.com // dnsサーバーの設定の�
 
 ### Java
 yum install -y java-1.8.0-openjdk-devel.x86_64
+yum install -y java-11-amazon-corretto-headless // java11
+
+alternatives --config java // java変更コマンド
+
+### 起動
+java -jar xxxx-0.0.1-SNAPSHOT.jar  
 
 ## cloudFormation.yaml
 インフラ構築の自動化
 
 ## URL
 https://openstandia.jp/oss_info/nginx/version/  
-https://tomcat.apache.org/download-90.cgi  
+https://tomcat.apache.org/download-90.cgi  // tomcat使う場合url
